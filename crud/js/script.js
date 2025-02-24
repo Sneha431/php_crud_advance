@@ -1,3 +1,87 @@
+//function for pagination
+ function pagination(totalpages,currentpages)
+ {
+      var pagelist="";
+      if(totalpages > 1)
+        {
+          currentpages=parseInt(currentpages);
+          const prevClass= (currentpages === 1)?"disabled":"";
+           const nextClass= (currentpages === totalpages)?"disabled":"";
+          pagelist+=`<ul class="pagination justify-content-center">`;
+          pagelist+=` <li class="page-item ${prevClass}"><a class="page-link" href="#" data-page=${currentpages-1}>Previous</a></li>`;
+         for (let index = 1; index <= totalpages; index++) {
+           const activeClass= (currentpages === index)?"active":""
+            pagelist+=` <li class="page-item ${activeClass}"><a class="page-link" href="#" data-page="${index}">${index}</a></li>`;
+          
+         }
+           pagelist+=`<li class="page-item ${nextClass}"><a class="page-link" href="#" data-page=${currentpages+1}>Next</a></li>`;
+            pagelist+=`</ul>`;
+      }
+      //pagination
+$("#pagination").html(pagelist);
+ }
+
+ // function to get the users from the database
+ function getuserrow(user)
+ {
+  var userrow="";
+  if(user)
+  {
+    userrow=` <tr>
+       <th scope="row">${user.id}</th>
+       <td><img src="uploads/${user.photo}" class="userphoto"/></td>
+       <td>${user.pname}</td>
+       <td>${user.email}</td>
+       <td>${user.phone}</td>
+       <td>
+         <a href="#" class="mr-3 profile" data-target="#userviewmodal" data-toggle="modal" data-id=${user.id} title="View Profile"> <i
+             class="fas fa-eye text-success"></i></a>
+         <a href="#" class="mr-3 edituser" title="Edit" data-target="#usermodal" data-toggle="modal" data-id=${user.id}><i
+             class="fas fa-edit text-info"></i></a>
+         <a href="#" class="mr-3 deleteuser" title="Delete"><i class="fas fa-trash-alt text-danger" data-id=${user.id}></i></a>
+       </td>
+     </tr>`;
+  }
+return userrow;
+ }
+ 
+ 
+ //get user function
+
+  function getUsers()
+  {
+    var pageno=$("#currentPage").val();
+    $.ajax({
+      url:"/php_crud_advance/CRUD/ajax.php",
+      method:"GET",
+      dataType:"json",
+      data:{page:pageno,action:"getallusers"},
+      beforeSend:function(){
+        console.log("waiting data is loading");
+      },
+      success:function(row){
+console.log(row);
+      if(row.users)
+        {
+          var userlist="";
+          $.each(row.users,function(index,user){
+            userlist+=getuserrow(user);
+          })
+          $("#usertable tbody").html(userlist);
+          let totalusers= Math.ceil(parseInt(row.count)/4);
+          const currentpages = $("#currentPage").val();
+          pagination(totalusers,currentpages);
+
+
+        }
+      },
+      error:function(request,error){
+          console.log(arguments);
+        console.log("Error :"+ error);
+      }
+    })
+
+  }
 $(document).ready(function() {
   // Wait until the document is fully loaded, then execute the following function
   $(document).on("submit", "#addform", function(e) {
@@ -29,6 +113,7 @@ $(document).ready(function() {
 
           //  console.log( $("#addform")[0]);// <form id=​"addform" method=​"POST" enctype=​"multipart/​form-data">​…​</form>​
           $("#addform")[0].reset();
+          getUsers();
         }
       },
 
@@ -38,32 +123,39 @@ $(document).ready(function() {
         console.log("Error: " + error);  // Logs the error message
       }
     });
+    
   });
 
+$(document).on("click","ul.pagination li a",function(event){
+event.preventDefault();
+const pagenum = $(this).data("page");
+$("#currentPage").val(pagenum);
+$(this).parent().siblings().removeClass("active");
+$(this).parent().addClass("active");
+ getUsers();
+})
+ getUsers();
 
-  //get user function
+$(".imgdiv").hide();
+$("#preview").hide();
 
-  function getUsers()
-  {
-    var pageno=$("#currentPage").val();
-    $.ajax({
-      url:"/php_crud_advance/CRUD/ajax.php",
-      method:"GET",
-      dataType:"json",
-      data:{page:pageno,action:"getallusers"},
-      beforeSend:function(){
-        console.log("waiting data is loading");
-      },
-      success:function(response){
-        console.log(response);
-      },
-      error:function(request,error){
-          console.log(arguments);
-        console.log("Error :"+ error);
-      }
-    })
-
-  }
-getUsers();
 
 });
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        // Set the preview image source to the file content
+        const preview = document.getElementById('preview');
+        preview.src = e.target.result;
+        $(".imgdiv").show();
+        preview.style.display = 'block'; // Show the preview image
+    };
+
+    // Read the file as a data URL
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}

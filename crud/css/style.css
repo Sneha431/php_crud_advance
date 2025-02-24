@@ -1,0 +1,11 @@
+.userphoto
+{
+  width:50px;
+  height:50px;
+  object-fit: contain;/*dont get squeezed*/
+}
+.imgdiv{
+ border: 1px solid #ced4da;
+    padding: 5px;
+    margin-top: 7px;
+}

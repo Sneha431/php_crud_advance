@@ -20,7 +20,7 @@ $dbobj = new Database();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <link rel="stylesheet" href="css/style.css?v=1">
   <title>PHP CRUD</title>
 </head>
 
@@ -29,7 +29,7 @@ $dbobj = new Database();
 
   <div class="container">
     <!-- Modal -->
-    <?php  include "form.php";?>
+    <?php include "form.php"; ?>
     <div class="row mb-3">
       <div class="col-10">
         <div class="input-group">
@@ -44,17 +44,17 @@ $dbobj = new Database();
       </div>
     </div>
     <?php include "tabledata.php";
-     include "profile.php";
+    include "profile.php";
     ?>
     <!--pagination-->
     <nav aria-label="Page navigation example" id="pagination">
-      <ul class="pagination justify-content-center">
+      <!-- <ul class="pagination justify-content-center">
         <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
         <li class="page-item active"><a class="page-link" href="#">1</a></li>
         <li class="page-item"><a class="page-link" href="#">2</a></li>
         <li class="page-item"><a class="page-link" href="#">3</a></li>
         <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
+      </ul> -->
     </nav>
   </div>
   <input type="hidden" value="1" name="currentPage" id="currentPage" />

@@ -10,7 +10,7 @@
      </tr>
    </thead>
    <tbody>
-     <tr>
+     <!-- <tr>
        <th scope="row">1</th>
        <td>PIC1</td>
        <td>NAME1</td>
@@ -23,7 +23,7 @@
              class="fas fa-edit text-info"></i></a>
          <a href="#" class="mr-3 deleteuser" title="Delete"><i class="fas fa-trash-alt text-danger"></i></a>
        </td>
-     </tr>
+     </tr> -->
 
    </tbody>
  </table>

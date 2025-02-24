@@ -47,10 +47,18 @@
                  <span class="input-group-text bg-dark"><i class="fas fa-images text-white"></i></span>
                </div>
                <div class="custom-file">
-                 <input type="file" class="custom-file-input" required="required" id="userphoto" name="image">
+                 <input type="file" class="custom-file-input" required="required" id="userphoto" name="image"
+                   onchange="previewImage(event)">
+                 <br><br>
+
+
                  <label class="custom-file-label" for="userphoto">Choose file</label>
+
                </div>
              </div>
+             <!-- Preview Image -->
+
+             <div class="imgdiv"> <img id="preview" alt="Image Preview" height="250px" width="250px" /></div>
            </div>
          </div>
          <div class="modal-footer">
