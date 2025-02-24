@@ -57,7 +57,7 @@ $dbobj = new Database();
       </ul>
     </nav>
   </div>
-
+  <input type="hidden" value="1" name="currentPage" id="currentPage" />
   </div>
 
   <!--jquery cdn-->

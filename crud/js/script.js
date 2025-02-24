@@ -39,4 +39,31 @@ $(document).ready(function() {
       }
     });
   });
+
+
+  //get user function
+
+  function getUsers()
+  {
+    var pageno=$("#currentPage").val();
+    $.ajax({
+      url:"/php_crud_advance/CRUD/ajax.php",
+      method:"GET",
+      dataType:"json",
+      data:{page:pageno,action:"getallusers"},
+      beforeSend:function(){
+        console.log("waiting data is loading");
+      },
+      success:function(response){
+        console.log(response);
+      },
+      error:function(request,error){
+          console.log(arguments);
+        console.log("Error :"+ error);
+      }
+    })
+
+  }
+getUsers();
+
 });
