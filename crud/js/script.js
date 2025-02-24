@@ -4,7 +4,7 @@ $(document).ready(function() {
     e.preventDefault(); // Prevent the default form submission action (which would reload the page)
 
     $.ajax({
-      url: "/CRUD/ajax.php",  // The URL to which the request will be sent (in this case, it's 'ajax.php' inside the 'CRUD' folder)
+      url: "/php_crud_advance/CRUD/ajax.php",  // The URL to which the request will be sent (in this case, it's 'ajax.php' inside the 'CRUD' folder)
       method: "POST",  // HTTP request method. Here we are using POST to send data to the server.
       dataType: "json",  // Expecting a JSON response from the server
       data: new FormData(this),  // The data that will be sent to the server. `FormData(this)` serializes the form as FormData (including files)
