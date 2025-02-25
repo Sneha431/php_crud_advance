@@ -37,11 +37,12 @@ $dbobj = new Database();
           <div class="input-group-prepend">
             <span class="input-group-text bg-dark"><i class="fas fa-search text-white"></i></span>
           </div>
-          <input type="text" class="form-control" placeholder="Search here...">
+          <input type="text" class="form-control" placeholder="Search here..." id="searchinput">
         </div>
       </div>
-      <div class="col-2">
-        <button class="btn btn-dark" data-toggle="modal" data-target="#usermodal" id="addnewuser">Add new user</button>
+      <div class=" col-2">
+        <button class="btn btn-dark" data-toggle="modal" data-target="#usermodal" id="addnewuser">Add new
+          user</button>
       </div>
     </div>
     <?php include "tabledata.php";

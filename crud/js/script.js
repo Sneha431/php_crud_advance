@@ -1,3 +1,16 @@
+ //add user btn click event
+
+ $(document).on("click","#addnewuser",function(){
+   $("#exampleModalLabel").text("Adding User");
+   $("#addform")[0].reset();
+    $("#userphototext").val("");
+     
+        $(".imgdiv").hide();
+$("#preview").hide();
+$("#userId").val("");
+  
+ })
+
 //function for pagination
  function pagination(totalpages,currentpages)
  {
@@ -86,8 +99,9 @@ console.log(row);
 $(document).ready(function() {
   // Wait until the document is fully loaded, then execute the following function
   $(document).on("submit", "#addform", function(e) {
+    console.log($("#userId").length);
     e.preventDefault(); // Prevent the default form submission action (which would reload the page)
-
+var msg=$("#userId").val().length > 0 ? "User has been updated successfully":"New User has been added successfully"
     $.ajax({
       url: "/php_crud_advance/CRUD/ajax.php",  // The URL to which the request will be sent (in this case, it's 'ajax.php' inside the 'CRUD' folder)
       method: "POST",  // HTTP request method. Here we are using POST to send data to the server.
@@ -107,6 +121,8 @@ $(document).ready(function() {
 
         if(response) {  // Check if the response exists (usually checks if the server indicates success)
           // Hide the modal (assumes you have a modal with id 'usermodel')
+          
+         
           $("#usermodal").modal("hide");
           
           // Reset the form with id 'addform' (clears the form fields)
@@ -114,6 +130,13 @@ $(document).ready(function() {
 
           //  console.log( $("#addform")[0]);// <form id=​"addform" method=​"POST" enctype=​"multipart/​form-data">​…​</form>​
           $("#addform")[0].reset();
+           $(".displaymessage")
+            .html(msg)
+            .fadeIn()
+            .delay(2500)
+            .fadeOut();
+         
+      
           getUsers();
         }
       },
@@ -213,6 +236,78 @@ $(document).on("click", "a.deleteuser", function(e) {
     });
   }
 });
+//profile view
+$(document).on("click","a.profile",function(){
+var uid = $(this).data("id");
+ $.ajax({
+      url:"/php_crud_advance/CRUD/ajax.php",
+      method:"GET",
+      dataType:"json",
+      data:{id:uid,action:"editusersdata"},
+      success:function(user){
+       if(user)
+       {
+const profile =`<div class="row">
+<div class="col-sm-6 col-md-4">
+<img src="uploads/${user.photo}" alt="image" class="rounded userphoto"/>
+</div>
+<div class="col-sm-6 col-md-8">
+
+<h4 class="text-primary">
+${user.pname}
+</h4>
+<p>
+<i class="fas fa-envelope-open text-dark"></i> &nbsp; ${user.email}
+<br>
+<i class="fas fa-phone text-dark"></i>&nbsp; ${user.phone}
+</p>
+</div>
+</div>`;
+$("#profile").html(profile);
+       }
+      },
+         error: function(request, error) {
+        console.log(arguments);
+        console.log("Error: " + error);
+      }
+})
+});
+
+//search data
+$(document).on("keyup", "#searchinput", function() {
+    var searchtext = $(this).val().toLowerCase();
+  
+  if(searchtext.length > 1)
+  {
+    $.ajax({
+      url:"/php_crud_advance/CRUD/ajax.php",
+      method:"GET",
+      dataType:"json",
+      data:{searchquery:searchtext,action:"searchuser"},
+      success:function(users){
+        if(users)
+        {
+          var userlist="";
+          $.each(users,function(index,user){
+          userlist+=getuserrow(user);
+          $("#usertable tbody").html(userlist);
+          $("#pagination").hide();
+        })
+        }
+        
+      },
+         error: function() {
+        console.log("Something went wrong");
+       
+      }
+})
+    }
+    else{
+          getUsers();
+           $("#pagination").hide();
+        }
+      })
+  
 
  getUsers();
 
@@ -221,18 +316,7 @@ $("#preview").hide();
 
 
 });
- //add user btn click event
 
- $(document).on("click","#addnewuser",function(){
-   $("#exampleModalLabel").text("Adding User");
-   $("#addform")[0].reset();
-    $("#userphototext").val("");
-     
-        $(".imgdiv").hide();
-$("#preview").hide();
-$("#userId").val();
-  
- })
 
 function previewImage(event) {
     const file = event.target.files[0];

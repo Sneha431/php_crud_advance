@@ -161,4 +161,19 @@ class User extends Database  // The "User" class extends the "Database" class, m
       return false;
     }
   }
+
+  //function to search user
+
+  public function searchuserdata($searchtext, $start = 0, $limit = 4)
+  {
+    $sql = "SELECT * FROM {$this->tablename} WHERE pname LIKE :search ORDER BY id DESC LIMIT {$start},{$limit}";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([':search' => "{$searchtext}%"]);
+    if ($stmt->rowCount() > 0) {
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+      $result = [];
+    }
+    return $result;
+  }
 }

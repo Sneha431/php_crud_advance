@@ -79,3 +79,9 @@ if ($action == "deleteuserdata") {
     exit;
   }
 }
+if ($action == "searchuser") {
+  $queryString = (!empty($_GET["searchquery"])) ? trim($_GET["searchquery"]) : "";
+  $result = $obj->searchuserdata($queryString);
+  echo json_encode($result);
+  exit;
+}
