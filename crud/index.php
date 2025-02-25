@@ -28,6 +28,7 @@ $dbobj = new Database();
   <h1 class="bg-dark text-light text-center py-2">PHP CRUD APPLICATION</h1>
 
   <div class="container">
+    <div class="displaymessage bg-dark text-light text-center py-1 my-2"></div>
     <!-- Modal -->
     <?php include "form.php"; ?>
     <div class="row mb-3">
@@ -40,7 +41,7 @@ $dbobj = new Database();
         </div>
       </div>
       <div class="col-2">
-        <button class="btn btn-dark" data-toggle="modal" data-target="#usermodel">Add new user</button>
+        <button class="btn btn-dark" data-toggle="modal" data-target="#usermodal" id="addnewuser">Add new user</button>
       </div>
     </div>
     <?php include "tabledata.php";

@@ -15,7 +15,7 @@ if ($action == "adduser" && !empty($_POST)) {
   $pimg = $_FILES["image"];
   $pphone = $_POST["phone"];
 
-  $puserid = (!empty($_REQUEST["userId"])) ? $_REQUEST["userId"] : "";
+  $userid = (!empty($_REQUEST["userId"])) ? $_REQUEST["userId"] : "";
   $imagename = "";
   if (!empty($pimg['name'])) {
     $imagename = $obj->upload_photo($pimg);
@@ -23,7 +23,11 @@ if ($action == "adduser" && !empty($_POST)) {
   } else {
     $userdata = ["pname" => $pname, "email" => $pemail, "phone" => $pphone];
   }
-  $userid = $obj->add($userdata);
+  if ($userid) {
+    $obj->update($userdata, $userid);
+  } else {
+    $userid = $obj->add($userdata);
+  }
   if (!empty($userid)) {
     $user = $obj->getRow('id', $userid);
     echo json_encode($user);
@@ -47,4 +51,31 @@ if ($action == "getallusers") {
   $userArr = ["count" => $totalcount, "users" => $userlist];
   echo json_encode($userArr);
   exit;
+}
+
+//action to do editing
+if ($action == "editusersdata") {
+  $userid = (!empty($_REQUEST["id"])) ? $_REQUEST["id"] : "";
+
+  if (!empty($userid)) {
+    $user = $obj->getRow('id', $userid);
+    echo json_encode($user);
+    exit;
+  }
+}
+
+//action to do delete data
+if ($action == "deleteuserdata") {
+  $userid = (!empty($_REQUEST["id"])) ? $_REQUEST["id"] : "";
+
+  if (!empty($userid)) {
+    $deleteduser = $obj->deleteRow($userid);
+    if ($deleteduser) {
+      $displaymessage = ["deleted" => 1];
+    } else {
+      $displaymessage = ["deleted" => 0];
+    }
+    echo json_encode($displaymessage);
+    exit;
+  }
 }

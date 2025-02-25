@@ -21,6 +21,7 @@
 $("#pagination").html(pagelist);
  }
 
+
  // function to get the users from the database
  function getuserrow(user)
  {
@@ -106,7 +107,7 @@ $(document).ready(function() {
 
         if(response) {  // Check if the response exists (usually checks if the server indicates success)
           // Hide the modal (assumes you have a modal with id 'usermodel')
-          $("#usermodel").modal("hide");
+          $("#usermodal").modal("hide");
           
           // Reset the form with id 'addform' (clears the form fields)
           // console.log( $("#addform"));//ce.fn.init {0: form#addform, length: 1}
@@ -134,6 +135,85 @@ $(this).parent().siblings().removeClass("active");
 $(this).parent().addClass("active");
  getUsers();
 })
+//onclick event for editing
+$(document).on('click','a.edituser',function(){
+     $("#exampleModalLabel").text("Updating User");
+var uid= $(this).data('id');
+
+        $(".imgdiv").hide();
+$("#preview").hide();
+ $.ajax({
+      url:"/php_crud_advance/CRUD/ajax.php",
+      method:"GET",
+      dataType:"json",
+      data:{id:uid,action:"editusersdata"},
+      beforeSend:function(){
+        console.log("waiting data is loading");
+      },
+      success:function(row){
+      console.log(row);
+      if(row){
+          $("#userId").val(row.id)
+        $("#username").val(row.pname);
+        $("#email").val(row.email);
+        $("#phone").val(row.phone);
+        $("#userphototext").val(row.photo);
+     if(row.photo)
+       { $(".imgdiv").show();
+$("#preview").show();
+
+  $("#preview").attr("src","uploads/"+row.photo);
+  }
+  
+      }
+    
+          
+        
+      },
+      error:function(request,error){
+          console.log(arguments);
+        console.log("Error :"+ error);
+      }
+    })
+})
+
+$(document).on("click", "a.deleteuser", function(e) {
+  e.preventDefault();
+  
+  // Corrected: Using $(this) to get the clicked element's data-id
+  var uid = $(this).find('i').data('id');
+  // You can remove this line after confirming it's correct
+
+  if (confirm("Are you sure you want to delete?")) {
+    $.ajax({
+      url: "/php_crud_advance/CRUD/ajax.php",
+      method: "POST",  // Change GET to POST for deletion
+      dataType: "json",
+      data: { id: uid, action: "deleteuserdata" },
+      beforeSend: function() {
+        console.log("Waiting for data to load...");
+      },
+      success: function(res) {
+        if (res.deleted == 1) 
+          {
+             
+          $(".displaymessage")
+            .html("User is deleted successfully.")
+            .fadeIn()
+            .delay(2500)
+            .fadeOut();
+          getUsers();  // Assuming this is a function that updates the user list
+          console.log("Done");
+        }
+      },
+      error: function(request, error) {
+        console.log(arguments);
+        console.log("Error: " + error);
+      }
+    });
+  }
+});
+
  getUsers();
 
 $(".imgdiv").hide();
@@ -141,6 +221,18 @@ $("#preview").hide();
 
 
 });
+ //add user btn click event
+
+ $(document).on("click","#addnewuser",function(){
+   $("#exampleModalLabel").text("Adding User");
+   $("#addform")[0].reset();
+    $("#userphototext").val("");
+     
+        $(".imgdiv").hide();
+$("#preview").hide();
+$("#userId").val();
+  
+ })
 
 function previewImage(event) {
     const file = event.target.files[0];

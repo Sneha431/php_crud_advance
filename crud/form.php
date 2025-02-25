@@ -1,9 +1,9 @@
- <div class="modal fade" id="usermodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ <div class="modal fade" id="usermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
    aria-hidden="true">
    <div class="modal-dialog" role="document">
      <div class="modal-content">
        <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Adding / Updating User</h5>
+         <h5 class="modal-title" id="exampleModalLabel">Adding User</h5>
          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
            <span aria-hidden="true">&times;</span>
          </button>
@@ -46,15 +46,18 @@
                <div class="input-group-prepend">
                  <span class="input-group-text bg-dark"><i class="fas fa-images text-white"></i></span>
                </div>
+
                <div class="custom-file">
-                 <input type="file" class="custom-file-input" required="required" id="userphoto" name="image"
+                 <input type="file" class="custom-file-input" id="userphoto" name="image"
                    onchange="previewImage(event)">
                  <br><br>
 
 
                  <label class="custom-file-label" for="userphoto">Choose file</label>
-
+                 <!-- <label class="custom-file-label" for="userphoto"> <input type="text" class="form-control px-1 py-2"
+                     id="userphototext" style="border:none"></label> -->
                </div>
+
              </div>
              <!-- Preview Image -->
 

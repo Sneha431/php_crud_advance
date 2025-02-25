@@ -114,4 +114,51 @@ class User extends Database  // The "User" class extends the "Database" class, m
       }
     }
   }
+  //function to update table data
+  public function update($data, $id)
+  {
+    if (!empty($data)) {
+      $fields = "";
+      $x = 1;
+      $fieldsCount = count($data);
+      foreach ($data as $field => $value) {
+        $fields .= "{$field}=:{$field}";
+        if ($x < $fieldsCount) {
+          $fields .= ",";
+        }
+        $x++;
+      }
+    }
+    $sql = "UPDATE {$this->tablename} SET {$fields} WHERE id=:id";
+    $stmt = $this->conn->prepare($sql);
+    try {
+      $this->conn->beginTransaction();
+      $data['id'] = $id;
+      $stmt->execute($data);
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      echo "Error :" . $e->getMessage();
+      $this->conn->rollback();
+      exit;
+    }
+  }
+  // function to delete
+  public function deleteRow($id)
+  {
+    $sql = "DELETE FROM {$this->tablename} WHERE id=:id";
+    $stmt = $this->conn->prepare($sql);
+    try {
+
+      $stmt->execute([":id" => $id]);
+      if ($stmt->rowCount() > 0) {
+        return true;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      echo "Error :" . $e->getMessage();
+      return false;
+    }
+  }
 }
